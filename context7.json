@@ -1,4 +1,7 @@
 {
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "@nds-stack/bun-semaphore",
+  "description": "Async semaphore for Bun — acquire/release, timeout, FIFO, zero dependencies",
   "url": "https://context7.com/nds-stack/bun-semaphore",
   "public_key": "pk_Zd1vpPPhPhvxg6ZjZWp5g"
 }
