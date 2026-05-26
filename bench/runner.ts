@@ -62,6 +62,9 @@ async function run(label: string, fn: () => Promise<void>, baselineOps?: number)
   );
 }
 
+// Warmup: run baseline once to warm JIT before measuring
+await baseline();
+
 const bStart = performance.now();
 await baseline();
 const bElapsed = (performance.now() - bStart) / 1000;
@@ -78,7 +81,9 @@ await run("baseline (no semaphore)", baseline);
 await run("acquire/release (no contention)", benchAcquireRelease, baselineOps);
 await run("withLock (no contention)", benchWithLock, baselineOps);
 await run("baseline contention (10 tasks)", benchBaselineContention);
-await run("withLock contention sem(1) × 10 tasks", benchContention, baselineOps);
+// contention baseline ops — computed from the second run above (warmed)
+const contentionBaselineOps = results.find(r => r.name === "baseline contention (10 tasks)")?.opsPerSec;
+await run("withLock contention sem(1) × 10 tasks", benchContention, contentionBaselineOps);
 
 console.log("=".repeat(82));
 console.log();

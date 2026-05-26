@@ -14,10 +14,10 @@ describe("Semaphore", () => {
     const s = new Semaphore(1);
     await s.acquire();
     let flag = false;
-    s.acquire().then(() => { flag = true; });
+    const p = s.acquire().then(() => { flag = true; });
     expect(flag).toBe(false);
     s.release();
-    await Bun.sleep(0);
+    await p;
     expect(flag).toBe(true);
   });
 
@@ -129,9 +129,12 @@ describe("Semaphore", () => {
     const s = new Semaphore(1);
     await s.acquire();
     const order: number[] = [];
-    const p1 = s.acquire().then(() => order.push(1));
-    const p2 = s.acquire().then(() => order.push(2));
-    const p3 = s.acquire().then(() => order.push(3));
+    const p1 = s.acquire();
+    const p2 = s.acquire();
+    const p3 = s.acquire();
+    p1.then(() => order.push(1));
+    p2.then(() => order.push(2));
+    p3.then(() => order.push(3));
     s.release();
     await p1;
     expect(order).toEqual([1]);

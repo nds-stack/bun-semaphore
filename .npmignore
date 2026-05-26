@@ -1,10 +1,7 @@
 agents/
 context7.json
-AGENTS.md
-PROJECT.md
-RULES.md
-TODO.md
-CHANGELOG.md
+*.md
+!README.md
 test/
 bench/
 .eslintrc*

@@ -1,1 +1,1 @@
-export { Semaphore, SemaphoreError } from "./semaphore.ts";
+export { Semaphore, SemaphoreError } from "./semaphore.js";

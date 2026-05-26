@@ -92,6 +92,7 @@ try {
 | **No priority queue** | All waiters are served FIFO. High-priority tasks cannot jump the queue. |
 | **Timeout uses setTimeout** | Timer precision is limited by the event loop. Under extreme load, timeouts may fire later than specified. Not suitable for hard real-time guarantees. |
 | **No cancellation** | Once `acquire()` is called, the waiter cannot be externally cancelled — only a timeout can remove it. |
+| **`timeoutMs = 0`** | Disables the timeout entirely (infinite wait). To immediately reject if unavailable, pass a small positive value like `1`. |
 | **No recursive locking** | Calling `acquire()` twice from the same async context without an intermediate `release()` will deadlock if permits are exhausted. |
 
 ## Multi-Instance / Cross-Boundary
@@ -192,29 +193,23 @@ class BatchSemaphore {
 
 ## Benchmarks
 
+Results vary by hardware. Run `bun run bench` on your machine.
+
 ```
 Benchmark: @nds-stack/bun-semaphore (1000 iterations each)
 
 ==================================================================================
   Operation                                            Throughput      vs baseline
 ==================================================================================
-  baseline (no semaphore)                               4.737.091 ops/s  baseline
-  acquire/release (no contention)                         458.926 ops/s  56.0%
-  withLock (no contention)                                484.778 ops/s  59.1%
-  baseline contention (10 tasks)                          217.231 ops/s  baseline
-  withLock contention sem(1) × 10 tasks                     6.512 ops/s  0.8%
+  baseline (no semaphore)                               4.714.757 ops/s  baseline
+  acquire/release (no contention)                         170.724 ops/s  3.4%
+  withLock (no contention)                                121.187 ops/s  2.4%
+  baseline contention (10 tasks)                          355.745 ops/s  baseline
+  withLock contention sem(1) × 10 tasks                     5.995 ops/s  1.7%
 ==================================================================================
 ```
 
-| Operation | Throughput | vs Baseline |
-|-----------|-----------|-------------|
-| Baseline (no semaphore) | 4,737,091 ops/s | — |
-| acquire/release (no contention) | 458,926 ops/s | 9.7% |
-| withLock (no contention) | 484,778 ops/s | 10.2% |
-| Baseline contention (10 tasks) | 217,231 ops/s | — |
-| withLock contention sem(1) × 10 tasks | 6,512 ops/s | 3.0% |
-
-Run locally: `bun run bench`
+*Note: numbers depend on hardware and system load — run `bun run bench` locally for your results.*
 
 ## Real-World Example
 

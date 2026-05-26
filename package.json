@@ -1,5 +1,5 @@
 {
-  "name": "@nds-stack/bun-semaphore", "version": "0.1.0-beta.0",
+  "name": "@nds-stack/bun-semaphore", "version": "0.1.0-beta.1",
   "description": "Async semaphore for Bun — acquire/release, timeout, FIFO, zero deps",
   "author": "nds-stack <nds.stack@gmail.com>", "type": "module",
   "main": "dist/index.js", "types": "dist/index.d.ts",

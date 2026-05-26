@@ -5,10 +5,9 @@ dist
 coverage
 *.lcov
 agents/
-AGENTS.md
-PROJECT.md
-RULES.md
-TODO.md
+*.md
+!README.md
+!CHANGELOG.md
 logs
 *.log
 .env
